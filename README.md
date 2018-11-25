@@ -1,16 +1,17 @@
-# dcloud-app-alipay
+# dcloud-app-pay
 
-DCloud 支付宝 App 支付，基于 [H5P.Server/payment/alipayrsa2](https://github.com/dcloudio/H5P.Server/blob/master/payment/alipayrsa2/README.md) 修改。
+DCloud App 支付，基于 [H5P.Server/payment](https://github.com/dcloudio/H5P.Server/blob/master/payment) 修改。
 
 ## 安装
 
 ``` bash
-composer require guanguans/dcloud-app-alipay
+composer require guanguans/dcloud-app-pay
 ```
 ## 使用
 
+### 支付宝
 ``` php
-require_once '../vendor/autoload.php';
+require_once 'path/vendor/autoload.php';
 
 use Guanguans\Alipay\Alipay;
 
