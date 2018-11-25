@@ -233,11 +233,11 @@ class AopClient
 
         if (curl_errno($ch)) {
 
-            throw new Exception(curl_error($ch), 0);
+            throw new \Exception(curl_error($ch), 0);
         } else {
             $httpStatusCode = curl_getinfo($ch, CURLINFO_HTTP_CODE);
             if (200 !== $httpStatusCode) {
-                throw new Exception($reponse, $httpStatusCode);
+                throw new \Exception($reponse, $httpStatusCode);
             }
         }
 
@@ -254,7 +254,7 @@ class AopClient
     protected function logCommunicationError($apiName, $requestUrl, $errorCode, $responseTxt)
     {
         $localIp                   = isset ($_SERVER["SERVER_ADDR"]) ? $_SERVER["SERVER_ADDR"] : "CLI";
-        $logger                    = new LtLogger;
+        $logger                    = new \LtLogger;
         $logger->conf["log_file"]  = rtrim(AOP_SDK_WORK_DIR, '\\/') . '/' . "logs/aop_comm_err_" . $this->appId . "_" . date("Y-m-d") . ".log";
         $logger->conf["separator"] = "^_^";
         $logData                   = [
@@ -325,7 +325,7 @@ class AopClient
         if (strcasecmp($this->fileCharset, $this->postCharset)) {
 
             // writeLog("本地文件字符集编码与表单提交编码不一致，请务必设置成一样，属性名分别为postCharset!");
-            throw new Exception("文件编码：[" . $this->fileCharset . "] 与表单提交编码：[" . $this->postCharset . "]两者不一致!");
+            throw new \Exception("文件编码：[" . $this->fileCharset . "] 与表单提交编码：[" . $this->postCharset . "]两者不一致!");
         }
 
         $iv = null;
@@ -360,17 +360,17 @@ class AopClient
 
             if ($this->checkEmpty($apiParams['biz_content'])) {
 
-                throw new Exception(" api request Fail! The reason : encrypt request is not supperted!");
+                throw new \Exception(" api request Fail! The reason : encrypt request is not supperted!");
             }
 
             if ($this->checkEmpty($this->encryptKey) || $this->checkEmpty($this->encryptType)) {
 
-                throw new Exception(" encryptType and encryptKey must not null! ");
+                throw new \Exception(" encryptType and encryptKey must not null! ");
             }
 
             if ("AES" != $this->encryptType) {
 
-                throw new Exception("加密类型只支持AES");
+                throw new \Exception("加密类型只支持AES");
             }
 
             // 执行加密
@@ -441,7 +441,7 @@ class AopClient
         if (strcasecmp($this->fileCharset, $this->postCharset)) {
 
             // writeLog("本地文件字符集编码与表单提交编码不一致，请务必设置成一样，属性名分别为postCharset!");
-            throw new Exception("文件编码：[" . $this->fileCharset . "] 与表单提交编码：[" . $this->postCharset . "]两者不一致!");
+            throw new \Exception("文件编码：[" . $this->fileCharset . "] 与表单提交编码：[" . $this->postCharset . "]两者不一致!");
         }
 
         $iv = null;
@@ -479,17 +479,17 @@ class AopClient
 
             if ($this->checkEmpty($apiParams['biz_content'])) {
 
-                throw new Exception(" api request Fail! The reason : encrypt request is not supperted!");
+                throw new \Exception(" api request Fail! The reason : encrypt request is not supperted!");
             }
 
             if ($this->checkEmpty($this->encryptKey) || $this->checkEmpty($this->encryptType)) {
 
-                throw new Exception(" encryptType and encryptKey must not null! ");
+                throw new \Exception(" encryptType and encryptKey must not null! ");
             }
 
             if ("AES" != $this->encryptType) {
 
-                throw new Exception("加密类型只支持AES");
+                throw new \Exception("加密类型只支持AES");
             }
 
             // 执行加密
@@ -607,9 +607,9 @@ class AopClient
         if (!isset ($paramsArray["method"])) {
             trigger_error("No api name passed");
         }
-        $inflector                    = new LtInflector;
+        $inflector                    = new \LtInflector;
         $inflector->conf["separator"] = ".";
-        $requestClassName             = ucfirst($inflector->camelize(substr($paramsArray["method"], 7))) . "Request";
+        $requestClassName             = '\\' . ucfirst($inflector->camelize(substr($paramsArray["method"], 7))) . "Request";
         if (!class_exists($requestClassName)) {
             trigger_error("No such api: " . $paramsArray["method"]);
         }
@@ -889,7 +889,7 @@ class AopClient
     function parserJSONSignData($request, $responseContent, $responseJSON)
     {
 
-        $signData = new SignData();
+        $signData = new \SignData();
 
         $signData->sign           = $this->parserJSONSign($responseJSON);
         $signData->signSourceData = $this->parserJSONSignSource($request, $responseContent);
@@ -949,7 +949,7 @@ class AopClient
     {
 
 
-        $signData = new SignData();
+        $signData = new \SignData();
 
         $signData->sign           = $this->parserXMLSign($responseContent);
         $signData->signSourceData = $this->parserXMLSignSource($request, $responseContent);
@@ -1048,7 +1048,7 @@ class AopClient
 
             if ($signData == null || $this->checkEmpty($signData->sign) || $this->checkEmpty($signData->signSourceData)) {
 
-                throw new Exception(" check sign Fail! The reason : signData is Empty");
+                throw new \Exception(" check sign Fail! The reason : signData is Empty");
             }
 
 
@@ -1070,12 +1070,12 @@ class AopClient
                         $checkResult = $this->verify($signData->signSourceData, $signData->sign, $this->alipayPublicKey, $this->signType);
 
                         if (!$checkResult) {
-                            throw new Exception("check sign Fail! [sign=" . $signData->sign . ", signSourceData=" . $signData->signSourceData . "]");
+                            throw new \Exception("check sign Fail! [sign=" . $signData->sign . ", signSourceData=" . $signData->signSourceData . "]");
                         }
 
                     } else {
 
-                        throw new Exception("check sign Fail! [sign=" . $signData->sign . ", signSourceData=" . $signData->signSourceData . "]");
+                        throw new \Exception("check sign Fail! [sign=" . $signData->sign . ", signSourceData=" . $signData->signSourceData . "]");
                     }
 
                 }
@@ -1152,7 +1152,7 @@ class AopClient
         $encContent = substr($responseContent, $signDataStartIndex + 1, $indexLen - 2);
 
 
-        $encryptParseItem = new EncryptParseItem();
+        $encryptParseItem = new \EncryptParseItem();
 
         $encryptParseItem->encryptContent = $encContent;
         $encryptParseItem->startIndex     = $signDataStartIndex;
@@ -1216,7 +1216,7 @@ class AopClient
         $indexOfXmlNode = strpos($responseContent, $xmlEndNode);
         if ($indexOfXmlNode < 0) {
 
-            $item                 = new EncryptParseItem();
+            $item                 = new \EncryptParseItem();
             $item->encryptContent = null;
             $item->startIndex     = 0;
             $item->endIndex       = 0;
@@ -1227,7 +1227,7 @@ class AopClient
         $bizContentLen = $indexOfXmlNode - $startIndex;
         $bizContent    = substr($responseContent, $startIndex, $bizContentLen);
 
-        $encryptParseItem                 = new EncryptParseItem();
+        $encryptParseItem                 = new \EncryptParseItem();
         $encryptParseItem->encryptContent = $bizContent;
         $encryptParseItem->startIndex     = $signDataStartIndex;
         $encryptParseItem->endIndex       = $indexOfXmlNode + strlen($xmlEndNode);
