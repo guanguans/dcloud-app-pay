@@ -1,6 +1,6 @@
 # dcloud-app-alipay
 
-DCloud 支付宝 App 支付
+DCloud 支付宝 App 支付，基于 [H5P.Server/payment/alipayrsa2](https://github.com/dcloudio/H5P.Server/blob/master/payment/alipayrsa2/README.md) 修改。
 
 ## 安装
 
