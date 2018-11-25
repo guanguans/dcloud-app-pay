@@ -1,7 +1,7 @@
 {
-    "name": "uanguans/dcloud-app-pay",
+    "name": "guanguans/dcloud-app-pay",
     "description": "DCloud App 支付",
-    "keywords": ["pay", "alipay", "wechat", "DCloud"],
+    "keywords": ["pay", "alipay", "wechat", "dcloud"],
     "support": {
         "issues": "https://github.com/guanguans/dcloud-app-pay/issues",
         "source": "https://github.com/guanguans/dcloud-app-pay"
