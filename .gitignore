@@ -1,6 +1,5 @@
-assets/*
-!assets/.gitignore
-protected/runtime/*
-!protected/runtime/.gitignore
-protected/data/*.db
-themes/classic/views/
+/vendor
+composer.lock
+/src/.DS_Store
+.DS_Store
+.idea
