@@ -4,6 +4,8 @@ namespace Guanguans\Alipay;
 
 use Guanguans\Alipay\Exceptions\InvalidArgumentException;
 use Guanguans\Alipay\Support\Config;
+use Guanguans\Alipay\Aop\AopClient;
+use Guanguans\Alipay\Aop\AlipayTradeAppPayRequest;
 
 class Alipay
 {
@@ -41,13 +43,9 @@ class Alipay
      */
     public function __construct(array $config)
     {
-        require_once 'aop/AopClient.php';
+        $this->aop = new AopClient;
 
-        require_once 'aop/request/AlipayTradeAppPayRequest.php';
-
-        $this->aop = new \AopClient;
-
-        $this->request = new \AlipayTradeAppPayRequest;
+        $this->request = new AlipayTradeAppPayRequest;
 
         $this->user_config = new Config($config);
 
