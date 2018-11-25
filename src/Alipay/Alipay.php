@@ -51,7 +51,7 @@ class Alipay
 
         $this->user_config = new Config($config);
 
-        if (is_null($this->user_config->get('app_id'))) {
+        if (empty($this->user_config->get('app_id'))) {
             throw new InvalidArgumentException('Missing Config -- [app_id]');
         }
 
