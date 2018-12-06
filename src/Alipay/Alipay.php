@@ -92,7 +92,7 @@ class Alipay
                       . "\"total_amount\": \"" . $config_biz['total_amount'] . "\","
                       . "\"product_code\":\"QUICK_MSECURITY_PAY\""
                       . "}";
-        $this->request->setNotifyUrl(urlencode($this->user_config->get('notify_url')));
+        $this->request->setNotifyUrl($this->user_config->get('notify_url'));
         $this->request->setBizContent($bizcontent);
 
         // 这里不需要使用 htmlspecialchars 进行转义，直接返回即可
