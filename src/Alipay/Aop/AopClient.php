@@ -819,7 +819,7 @@ class AopClient
         $re['gbk'] = "/[\x01-\x7f]|[\x81-\xfe][\x40-\xfe]/";
         $re['big5'] = "/[\x01-\x7f]|[\x81-\xfe]([\x40-\x7e]|\xa1-\xfe])/";
         preg_match_all($re[$charset], $str, $match);
-        $slice = join('', array_slice($match[0], $start, $length));
+        $slice = implode('', array_slice($match[0], $start, $length));
 
         return $slice;
     }
