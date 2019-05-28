@@ -1,15 +1,19 @@
-# dcloud-app-pay
+# DCloud app 支付 SDK
+
+[![Build Status](https://travis-ci.org/guanguans/dcloud-app-pay.svg?branch=master)](https://travis-ci.org/guanguans/dcloud-app-pay)
+[![StyleCI](https://github.styleci.io/repos/159013854/shield?branch=master)](https://github.styleci.io/repos/159013854)
+[![Latest Stable Version](https://poser.pugx.org/guanguans/dcloud-app-pay/v/stable)](https://packagist.org/packages/guanguans/dcloud-app-pay)
+[![License](https://poser.pugx.org/guanguans/dcloud-app-pay/license)](https://packagist.org/packages/guanguans/dcloud-app-pay)
 
 DCloud App 支付，基于 [H5P.Server/payment](https://github.com/dcloudio/H5P.Server/blob/master/payment) 修改。
 
 ## 安装
 
 ``` bash
-composer require guanguans/dcloud-app-pay
+$ composer require guanguans/dcloud-app-pay
 ```
 ## 使用
 
-### 支付宝
 ``` php
 require_once 'path/vendor/autoload.php';
 
