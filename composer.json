@@ -1,7 +1,13 @@
 {
     "name": "guanguans/dcloud-app-pay",
-    "description": "DCloud App 支付",
-    "keywords": ["pay", "alipay", "wechat", "dcloud"],
+    "description": "DCloud App 支付 SDK",
+    "keywords": [
+        "pay",
+        "SDK",
+        "alipay",
+        "wechat",
+        "dcloud"
+    ],
     "support": {
         "issues": "https://github.com/guanguans/dcloud-app-pay/issues",
         "source": "https://github.com/guanguans/dcloud-app-pay"
@@ -12,8 +18,8 @@
     },
     "require-dev": {
         "php": ">=5.6.0",
-        "phpunit/phpunit": "^8.2@dev",
-        "mockery/mockery": "^1.0@dev"
+        "phpunit/phpunit": "~5 || ~7",
+        "mockery/mockery": "~1.0"
     },
     "license": "MIT",
     "authors": [
