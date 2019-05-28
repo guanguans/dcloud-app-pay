@@ -77,12 +77,15 @@ class Config implements ArrayAccess
         switch (count($keys)) {
             case '1':
                 $this->config[$key] = $value;
+
                 break;
             case '2':
                 $this->config[$keys[0]][$keys[1]] = $value;
+
                 break;
             case '3':
                 $this->config[$keys[0]][$keys[1]][$keys[2]] = $value;
+
                 break;
 
             default:
