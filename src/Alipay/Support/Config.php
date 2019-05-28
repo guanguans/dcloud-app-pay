@@ -1,5 +1,13 @@
 <?php
 
+/*
+ * This file is part of the guanguans/dcloud-app-pay.
+ *
+ * (c) 琯琯 <yzmguanguan@gmail.com>
+ *
+ * This source file is subject to the MIT license that is bundled.
+ */
+
 namespace Guanguans\Alipay\Support;
 
 use ArrayAccess;
@@ -14,6 +22,7 @@ class Config implements ArrayAccess
 
     /**
      * Config constructor.
+     *
      * @param array $config
      */
     public function __construct(array $config = [])
@@ -23,8 +32,10 @@ class Config implements ArrayAccess
 
     /**
      * get a config.
+     *
      * @param string $key
      * @param string $default
+     *
      * @return mixed
      */
     public function get($key = null, $default = null)
@@ -51,12 +62,13 @@ class Config implements ArrayAccess
 
     /**
      * set a config.
+     *
      * @param string $key
      * @param array  $value
      */
     public function set(string $key, $value)
     {
-        if ($key == '') {
+        if ('' == $key) {
             throw new InvalidArgumentException('Invalid config key.');
         }
 
@@ -82,7 +94,9 @@ class Config implements ArrayAccess
 
     /**
      * [offsetExists description].
+     *
      * @param string $offset
+     *
      * @return bool
      */
     public function offsetExists($offset)
@@ -92,7 +106,9 @@ class Config implements ArrayAccess
 
     /**
      * [offsetGet description].
+     *
      * @param string $offset
+     *
      * @return mixed
      */
     public function offsetGet($offset)
@@ -102,8 +118,10 @@ class Config implements ArrayAccess
 
     /**
      * [offsetSet description].
+     *
      * @param string $offset
      * @param string $value
+     *
      * @return array
      */
     public function offsetSet($offset, $value)
@@ -113,7 +131,9 @@ class Config implements ArrayAccess
 
     /**
      * [offsetUnset description].
+     *
      * @param string $offset
+     *
      * @return array
      */
     public function offsetUnset($offset)

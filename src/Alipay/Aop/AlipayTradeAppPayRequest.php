@@ -1,23 +1,31 @@
 <?php
 
+/*
+ * This file is part of the guanguans/dcloud-app-pay.
+ *
+ * (c) 琯琯 <yzmguanguan@gmail.com>
+ *
+ * This source file is subject to the MIT license that is bundled.
+ */
+
 namespace Guanguans\Alipay\Aop;
 
 class AlipayTradeAppPayRequest
 {
     private $bizContent;
-    private $apiParas    = [];
+    private $apiParas = [];
     private $terminalType;
     private $terminalInfo;
     private $prodCode;
-    private $apiVersion  = "1.0";
+    private $apiVersion = '1.0';
     private $notifyUrl;
     private $returnUrl;
     private $needEncrypt = false;
 
     public function setBizContent($bizContent)
     {
-        $this->bizContent              = $bizContent;
-        $this->apiParas["biz_content"] = $bizContent;
+        $this->bizContent = $bizContent;
+        $this->apiParas['biz_content'] = $bizContent;
     }
 
     public function getBizContent()
@@ -27,7 +35,7 @@ class AlipayTradeAppPayRequest
 
     public function getApiMethodName()
     {
-        return "alipay.trade.app.pay";
+        return 'alipay.trade.app.pay';
     }
 
     public function setNotifyUrl($notifyUrl)
