@@ -14,6 +14,9 @@ use Guanguans\Alipay\Aop\AlipayTradeAppPayRequest;
 use Guanguans\Alipay\Aop\AopClient;
 use Guanguans\Alipay\Exceptions\InvalidArgumentException;
 
+/**
+ * Class Alipay.
+ */
 class Alipay
 {
     /**
@@ -22,8 +25,6 @@ class Alipay
     protected $gateway = 'https://openapi.alipay.com/gateway.do?charset=UTF-8';
 
     /**
-     * alipay global config params.
-     *
      * @var array
      */
     protected $config = [
@@ -51,11 +52,9 @@ class Alipay
     protected $alipayTradeAppPayRequest;
 
     /**
-     * [__construct description].
+     * Alipay constructor.
      *
-     * @author guanguans
-     *
-     * @param array $config [description]
+     * @param array $config
      */
     public function __construct(array $config)
     {
@@ -126,9 +125,9 @@ class Alipay
     }
 
     /**
-     * @param \Guanguans\Alipay\Aop\AopClient $aopClient
+     * @param \Guanguans\Alipay\Config $aopClientConfig
      */
-    public function setAopClientConfig($aopClientConfig)
+    public function setAopClientConfig(Config $aopClientConfig)
     {
         $this->aopClient->gatewayUrl = $this->getGateway();
         $this->aopClient->appId = $aopClientConfig->get('app_id');
@@ -150,18 +149,18 @@ class Alipay
     /**
      * @param \Guanguans\Alipay\Aop\AlipayTradeAppPayRequest $alipayTradeAppPayRequest
      */
-    public function setAlipayTradeAppPayRequest(alipayTradeAppPayRequest $alipayTradeAppPayRequest)
+    public function setAlipayTradeAppPayRequest(AlipayTradeAppPayRequest $alipayTradeAppPayRequest)
     {
         $this->alipayTradeAppPayRequest = $alipayTradeAppPayRequest;
     }
 
     /**
-     * @param $setAlipayTradeAppPayRequestConfig
+     * @param $alipayTradeAppPayRequestConfig
      */
-    public function setAlipayTradeAppPayRequestConfig($setAlipayTradeAppPayRequestConfig)
+    public function setAlipayTradeAppPayRequestConfig($alipayTradeAppPayRequestConfig)
     {
         $this->alipayTradeAppPayRequest->setNotifyUrl($this->getConfig()->get('notify_url'));
-        $this->alipayTradeAppPayRequest->setBizContent($setAlipayTradeAppPayRequestConfig);
+        $this->alipayTradeAppPayRequest->setBizContent($alipayTradeAppPayRequestConfig);
     }
 
     /**
