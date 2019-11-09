@@ -206,6 +206,7 @@ class Arr
             // if the exact key exists in the top-level, remove it
             if (static::exists($array, $key)) {
                 unset($array[$key]);
+
                 continue;
             }
             $parts = explode('.', $key);
