@@ -877,9 +877,9 @@ class AopClient
             return $this->parserJSONSource($responseContent, $rootNodeName, $rootIndex);
         } elseif ($errorIndex > 0) {
             return $this->parserJSONSource($responseContent, $this->ERROR_RESPONSE, $errorIndex);
-        } else {
-            return null;
         }
+
+        return null;
     }
 
     public function parserJSONSource($responseContent, $nodeName, $nodeIndex)
@@ -925,9 +925,9 @@ class AopClient
             return $this->parserXMLSource($responseContent, $rootNodeName, $rootIndex);
         } elseif ($errorIndex > 0) {
             return $this->parserXMLSource($responseContent, $this->ERROR_RESPONSE, $errorIndex);
-        } else {
-            return null;
         }
+
+        return null;
     }
 
     public function parserXMLSource($responseContent, $nodeName, $nodeIndex)
@@ -1044,9 +1044,9 @@ class AopClient
             return $this->parserEncryptJSONItem($responseContent, $rootNodeName, $rootIndex);
         } elseif ($errorIndex > 0) {
             return $this->parserEncryptJSONItem($responseContent, $this->ERROR_RESPONSE, $errorIndex);
-        } else {
-            return null;
         }
+
+        return null;
     }
 
     private function parserEncryptJSONItem($responseContent, $nodeName, $nodeIndex)
@@ -1100,9 +1100,9 @@ class AopClient
             return $this->parserEncryptXMLItem($responseContent, $rootNodeName, $rootIndex);
         } elseif ($errorIndex > 0) {
             return $this->parserEncryptXMLItem($responseContent, $this->ERROR_RESPONSE, $errorIndex);
-        } else {
-            return null;
         }
+
+        return null;
     }
 
     private function parserEncryptXMLItem($responseContent, $nodeName, $nodeIndex)

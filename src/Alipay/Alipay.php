@@ -13,7 +13,6 @@ namespace Guanguans\Alipay;
 use Guanguans\Alipay\Aop\AlipayTradeAppPayRequest;
 use Guanguans\Alipay\Aop\AopClient;
 use Guanguans\Alipay\Exceptions\InvalidArgumentException;
-use Guanguans\Alipay\Support\Config;
 
 class Alipay
 {
@@ -27,24 +26,29 @@ class Alipay
      *
      * @var array
      */
-    protected $config;
+    protected $config = [
+        'app_id' => '',
+        'method' => '',
+        'format' => 'JSON',
+        'charset' => 'UTF-8',
+        'sign_type' => 'RSA2',
+        'version' => '1.0',
+        'return_url' => '',
+        'notify_url' => '',
+        'timestamp' => '',
+        'sign' => '',
+        'biz_content' => '',
+    ];
 
     /**
-     * user's config params.
-     *
-     * @var \Guanguans\Alipay\Support\Config
+     * @var AopClient
      */
-    protected $user_config;
+    protected $aopClient;
 
     /**
-     * @var \AopClient
+     * @var AlipayTradeAppPayRequest
      */
-    protected $aop;
-
-    /**
-     * @var \AlipayTradeAppPayRequest
-     */
-    protected $request;
+    protected $alipayTradeAppPayRequest;
 
     /**
      * [__construct description].
@@ -55,61 +59,124 @@ class Alipay
      */
     public function __construct(array $config)
     {
-        $this->aop = new AopClient();
-
-        $this->request = new AlipayTradeAppPayRequest();
-
-        $this->user_config = new Config($config);
-
-        if (empty($this->user_config->get('app_id'))) {
+        if (empty($config['app_id'])) {
             throw new InvalidArgumentException('Missing Config -- [app_id]');
         }
 
-        $this->config = [
-            'app_id' => $this->user_config->get('app_id'),
-            'method' => '',
-            'format' => 'JSON',
-            'charset' => 'UTF-8',
-            'sign_type' => 'RSA2',
-            'version' => '1.0',
-            'return_url' => $this->user_config->get('return_url', ''),
-            'notify_url' => $this->user_config->get('notify_url', ''),
-            'timestamp' => date('Y-m-d H:i:s'),
-            'sign' => '',
-            'biz_content' => '',
-        ];
+        $config['timestamp'] = date('Y-m-d H:i:s');
+
+        $this->setConfig(new Config(array_merge($this->getConfig(), $config)));
+        $this->setAopClient(new AopClient());
+        $this->setAlipayTradeAppPayRequest(new AlipayTradeAppPayRequest());
     }
 
     /**
-     * pay a order.
+     * @param array $configBiz
      *
-     * @param array $config_biz
-     *
-     * @return mixed
+     * @return string
      */
-    public function pay(array $config_biz)
+    public function pay(array $configBiz)
     {
-        // AopClient 处理
-        $this->aop->gatewayUrl = $this->gateway;
-        $this->aop->appId = $this->user_config->get('app_id');
-        $this->aop->rsaPrivateKey = $this->user_config->get('private_key');
-        $this->aop->format = $this->config['format'];
-        $this->aop->charset = $this->config['charset'];
-        $this->aop->signType = $this->config['sign_type'];
-        $this->aop->alipayrsaPublicKey = $this->user_config->get('ali_public_key');
-
-        // AlipayTradeAppPayRequest 处理
-        $bizcontent = '{"body":"'.$config_biz['body'].'",'
-                      .'"subject": "'.$config_biz['subject'].'",'
-                      .'"out_trade_no": "'.$config_biz['out_trade_no'].'",'
-                      .'"timeout_express": "30m",'
-                      .'"total_amount": "'.$config_biz['total_amount'].'",'
-                      .'"product_code":"QUICK_MSECURITY_PAY"'
-                      .'}';
-        $this->request->setNotifyUrl($this->user_config->get('notify_url'));
-        $this->request->setBizContent($bizcontent);
-
+        // AopClient 配置
+        $this->setAopClientConfig($this->getConfig());
+        // AlipayTradeAppPayRequest 配置
+        $this->setAlipayTradeAppPayRequestConfig($this->getBizContent($configBiz));
         // 这里不需要使用 htmlspecialchars 进行转义，直接返回即可
-        return $this->aop->sdkExecute($this->request);
+        return $this->getAopClient()->sdkExecute($this->getAlipayTradeAppPayRequest());
+    }
+
+    /**
+     * @return string
+     */
+    public function getGateway()
+    {
+        return $this->gateway;
+    }
+
+    /**
+     * @return array
+     */
+    public function getConfig()
+    {
+        return $this->config;
+    }
+
+    /**
+     * @param \Guanguans\Alipay\Config $config
+     */
+    public function setConfig(Config $config)
+    {
+        $this->config = $config;
+    }
+
+    /**
+     * @return \Guanguans\Alipay\Aop\AopClient
+     */
+    public function getAopClient()
+    {
+        return $this->aopClient;
+    }
+
+    /**
+     * @param \Guanguans\Alipay\Aop\AopClient $aopClient
+     */
+    public function setAopClient(AopClient $aopClient)
+    {
+        $this->aopClient = $aopClient;
+    }
+
+    /**
+     * @param \Guanguans\Alipay\Aop\AopClient $aopClient
+     */
+    public function setAopClientConfig($aopClientConfig)
+    {
+        $this->aopClient->gatewayUrl = $this->getGateway();
+        $this->aopClient->appId = $aopClientConfig->get('app_id');
+        $this->aopClient->rsaPrivateKey = $aopClientConfig->get('private_key');
+        $this->aopClient->format = $aopClientConfig->get('format');
+        $this->aopClient->charset = $aopClientConfig->get('charset');
+        $this->aopClient->signType = $aopClientConfig->get('sign_type');
+        $this->aopClient->alipayrsaPublicKey = $aopClientConfig->get('ali_public_key');
+    }
+
+    /**
+     * @return \Guanguans\Alipay\Aop\AlipayTradeAppPayRequest
+     */
+    public function getAlipayTradeAppPayRequest()
+    {
+        return $this->alipayTradeAppPayRequest;
+    }
+
+    /**
+     * @param \Guanguans\Alipay\Aop\AlipayTradeAppPayRequest $alipayTradeAppPayRequest
+     */
+    public function setAlipayTradeAppPayRequest(alipayTradeAppPayRequest $alipayTradeAppPayRequest)
+    {
+        $this->alipayTradeAppPayRequest = $alipayTradeAppPayRequest;
+    }
+
+    /**
+     * @param $setAlipayTradeAppPayRequestConfig
+     */
+    public function setAlipayTradeAppPayRequestConfig($setAlipayTradeAppPayRequestConfig)
+    {
+        $this->alipayTradeAppPayRequest->setNotifyUrl($this->getConfig()->get('notify_url'));
+        $this->alipayTradeAppPayRequest->setBizContent($setAlipayTradeAppPayRequestConfig);
+    }
+
+    /**
+     * @param array $configBiz
+     *
+     * @return string
+     */
+    public function getBizContent(array $configBiz)
+    {
+        return '{"body":"'.$configBiz['body'].'",'
+               .'"subject": "'.$configBiz['subject'].'",'
+               .'"out_trade_no": "'.$configBiz['out_trade_no'].'",'
+               .'"timeout_express": "30m",'
+               .'"total_amount": "'.$configBiz['total_amount'].'",'
+               .'"product_code":"QUICK_MSECURITY_PAY"'
+               .'}';
     }
 }
